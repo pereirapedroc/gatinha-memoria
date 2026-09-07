@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Em memória de [Nome do Gatinho]</title>
+<meta name="description" content="Uma página de memória para [Nome do Gatinho].">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+
+  /* ============ TOKENS ============ */
+  :root{
+    --paper: #FAF6EF;
+    --paper-dim: #F1EADB;
+    --ink: #2B241D;
+    --ink-soft: #5B5347;
+    --gold: #C79A3B;
+    --gold-soft: #E4C878;
+    --clay: #A85D42;
+    --pine: #3E5449;
+    --mist: #E7DECE;
+    --line: rgba(43,36,29,0.14);
+
+    --display: "Fraunces", serif;
+    --body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+
+    --max: 1100px;
+    --gap: clamp(1.5rem, 4vw, 3.5rem);
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior: auto; }
+    *{ animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+
+  body{
+    margin:0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,h2{
+    font-family: var(--display);
+    font-weight: 500;
+    color: var(--ink);
+    margin: 0;
+  }
+
+  a{ color: var(--clay); }
+
+  /* ============ SUNBEAM SIGNATURE ELEMENT ============ */
+  /* Uma mancha de luz quente que se desloca lentamente à medida
+     que se percorre a página — como o sol a andar pelo chão,
+     o sítio preferido de qualquer gato. */
+  .sunbeam{
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background: radial-gradient(
+      560px 560px at var(--sun-x, 20%) var(--sun-y, 10%),
+      rgba(199,154,59,0.16),
+      rgba(199,154,59,0.05) 45%,
+      transparent 70%
+    );
+    transition: background-position 0.2s linear;
+  }
+
+  /* ============ HERO ============ */
+  .hero{
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+  }
+
+  .hero__media{
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    /* SUBSTITUIR: coloca aqui a foto principal do teu gatinho.
+       Caminho sugerido: fotos/capa.jpg (ver README) */
+    background-image:
+      linear-gradient(rgba(43,36,29,0.08), rgba(43,36,29,0.08)),
+      url("fotos/capa.jpg");
+    background-size: cover;
+    background-position: center;
+    background-color: var(--mist);
+  }
+
+  .hero__media::before{
+    /* aviso visual enquanto não existir foto real */
+    content: "SUBSTITUIR — fotos/capa.jpg";
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--body);
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    background: repeating-linear-gradient(
+      135deg, var(--paper-dim), var(--paper-dim) 12px,
+      var(--mist) 12px, var(--mist) 24px
+    );
+  }
+
+  .hero__overlay{
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+      to top,
+      rgba(43,36,29,0.78) 0%,
+      rgba(43,36,29,0.35) 42%,
+      rgba(43,36,29,0.02) 68%
+    );
+  }
+
+  .hero__content{
+    position: relative;
+    z-index: 2;
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 0 var(--gap) clamp(3rem, 8vh, 5.5rem);
+    width: 100%;
+    color: var(--paper);
+  }
+
+  .eyebrow{
+    font-family: var(--body);
+    font-size: 0.8rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold-soft);
+    margin: 0 0 0.9rem;
+  }
+
+  .hero__content h1{
+    font-size: clamp(2.6rem, 8vw, 5.2rem);
+    font-style: italic;
+    font-weight: 500;
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+  }
+
+  .dates{
+    margin: 1.1rem 0 0;
+    font-size: 1rem;
+    color: rgba(250,246,239,0.82);
+    letter-spacing: 0.02em;
+  }
+
+  .scroll-cue{
+    position: absolute;
+    z-index: 2;
+    left: var(--gap);
+    bottom: 1.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(250,246,239,0.65);
+  }
+  .scroll-cue::after{
+    content: "";
+    width: 1px;
+    height: 26px;
+    background: rgba(250,246,239,0.5);
+    animation: cue 2.6s ease-in-out infinite;
+  }
+  @keyframes cue{
+    0%,100%{ transform: scaleY(0.4); opacity: 0.4; transform-origin: top; }
+    50%{ transform: scaleY(1); opacity: 1; transform-origin: top; }
+  }
+
+  /* ============ PAW MARK (signature secundária, usada 1x por secção) ============ */
+  .paw-mark{
+    display: inline-flex;
+    width: 22px;
+    height: 22px;
+    color: var(--clay);
+    opacity: 0.85;
+    margin-bottom: 1.1rem;
+  }
+  .paw-mark svg{ width: 100%; height: 100%; fill: currentColor; }
+
+  /* ============ STORY SECTIONS ============ */
+  main{ position: relative; z-index: 1; background: var(--paper); }
+
+  .story{
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: clamp(4rem, 10vh, 7rem) var(--gap);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--gap);
+    align-items: center;
+  }
+
+  .story--reverse .story__media{ order: 2; }
+  .story--reverse .story__text{ order: 1; }
+
+  .story__media{
+    aspect-ratio: 4/5;
+    border-radius: 2px;
+    background: repeating-linear-gradient(
+      135deg, var(--paper-dim), var(--paper-dim) 12px,
+      var(--mist) 12px, var(--mist) 24px
+    );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    background-size: cover;
+    background-position: center;
+  }
+  /* SUBSTITUIR: cada secção já aponta para o seu ficheiro em /fotos.
+     Basta colocar lá a imagem com o mesmo nome. */
+  #como-era .story__media{ background-image: url("fotos/como-era.jpg"); }
+  #de-onde-veio .story__media{ background-image: url("fotos/chegada.jpg"); }
+
+  .story__text h2{
+    font-size: clamp(1.9rem, 3.4vw, 2.6rem);
+    font-style: italic;
+    margin-bottom: 1.2rem;
+  }
+
+  .story__text p{
+    color: var(--ink-soft);
+    font-size: 1.05rem;
+  }
+
+  blockquote{
+    margin: 1.6rem 0 0;
+    padding-left: 1.1rem;
+    border-left: 2px solid var(--gold);
+    font-family: var(--display);
+    font-style: italic;
+    font-size: 1.25rem;
+    color: var(--pine);
+  }
+
+  .reveal{
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.is-visible{ opacity: 1; transform: translateY(0); }
+
+  /* ============ GALLERY ============ */
+  .gallery{
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: clamp(3rem, 8vh, 5rem) var(--gap) clamp(5rem, 10vh, 7rem);
+  }
+
+  .gallery__intro{
+    text-align: center;
+    max-width: 560px;
+    margin: 0 auto clamp(2.5rem, 6vh, 3.5rem);
+  }
+  .gallery__intro h2{
+    font-size: clamp(1.9rem, 3.4vw, 2.6rem);
+    font-style: italic;
+  }
+  .gallery__intro p{
+    color: var(--ink-soft);
+    margin-top: 0.8rem;
+  }
+
+  .gallery__grid{
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-auto-rows: 130px;
+    gap: 0.9rem;
+  }
+
+  .ph{
+    margin: 0;
+    position: relative;
+    grid-column: span 2;
+    grid-row: span 2;
+    border-radius: 2px;
+    overflow: hidden;
+    background: repeating-linear-gradient(
+      135deg, var(--paper-dim), var(--paper-dim) 12px,
+      var(--mist) 12px, var(--mist) 24px
+    );
+    background-size: cover;
+    background-position: center;
+  }
+  .ph--wide{ grid-column: span 4; }
+  .ph--tall{ grid-row: span 3; }
+
+  .ph figcaption{
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    padding: 0.7rem 0.9rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    color: var(--paper);
+    background: linear-gradient(to top, rgba(43,36,29,0.62), transparent);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+  .ph:hover figcaption{ opacity: 1; }
+
+  .ph__label{
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0.6rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ============ FOOTER ============ */
+  .closing{
+    position: relative;
+    z-index: 1;
+    background: var(--ink);
+    color: var(--paper-dim);
+    text-align: center;
+    padding: clamp(4rem, 12vh, 6rem) var(--gap);
+  }
+  .closing .paw-mark{ color: var(--gold-soft); margin: 0 auto 1.4rem; }
+  .closing__text{
+    max-width: 520px;
+    margin: 0 auto;
+    font-family: var(--display);
+    font-style: italic;
+    font-size: clamp(1.3rem, 2.6vw, 1.7rem);
+    line-height: 1.5;
+  }
+  .closing__sub{
+    margin-top: 1.6rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(250,246,239,0.5);
+  }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 780px){
+    .story, .story--reverse{
+      grid-template-columns: 1fr;
+    }
+    .story--reverse .story__media,
+    .story--reverse .story__text{ order: initial; }
+    .story__media{ aspect-ratio: 16/11; }
+
+    .gallery__grid{
+      grid-template-columns: repeat(2, 1fr);
+      grid-auto-rows: 150px;
+    }
+    .ph--wide{ grid-column: span 2; }
+  }
+
+  @media (max-width: 480px){
+    .scroll-cue{ display: none; }
+  }
+
+  :focus-visible{
+    outline: 2px solid var(--pine);
+    outline-offset: 3px;
+  }
+</style>
+</head>
+<body>
+
+  <div class="sunbeam" aria-hidden="true"></div>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero">
+    <div class="hero__media" role="img" aria-label="Foto principal de [Nome do Gatinho]"></div>
+    <div class="hero__overlay"></div>
+    <div class="hero__content">
+      <p class="eyebrow">Em memória de</p>
+      <h1>[Nome do Gatinho]</h1>
+      <p class="dates">[dd/mm/aaaa] — [dd/mm/aaaa]</p>
+    </div>
+    <div class="scroll-cue">continuar</div>
+  </header>
+
+  <main>
+
+    <!-- ============ COMO ERA ============ -->
+    <section class="story reveal" id="como-era">
+      <div class="story__media" role="img" aria-label="Foto de [Nome do Gatinho]">
+        <!-- SUBSTITUIR: fotos/como-era.jpg -->
+      </div>
+      <div class="story__text">
+        <span class="paw-mark" aria-hidden="true">
+          <svg viewBox="0 0 100 100"><path d="M50 58c14 0 26 13 26 24 0 8-7 13-16 13-4 0-7-2-10-2s-6 2-10 2c-9 0-16-5-16-13 0-11 12-24 26-24z"/><ellipse cx="24" cy="42" rx="11" ry="14"/><ellipse cx="50" cy="30" rx="11" ry="14"/><ellipse cx="76" cy="42" rx="11" ry="14"/><ellipse cx="14" cy="66" rx="9" ry="12"/></svg>
+        </span>
+        <h2>Como era</h2>
+        <p>
+          [Escreve aqui como era o teu gatinho: a personalidade, os hábitos,
+          o que gostava de fazer, algum som ou gesto característico, o que
+          te fazia rir ou te acalmava. Duas ou três frases já bastam — o
+          importante é que soe a ele.]
+        </p>
+        <blockquote>[Uma frase curta que o resuma — algo que dizias
+          sobre ele, ou que ele "diria" de si mesmo.]</blockquote>
+      </div>
+    </section>
+
+    <!-- ============ DE ONDE VEIO ============ -->
+    <section class="story story--reverse reveal" id="de-onde-veio">
+      <div class="story__media" role="img" aria-label="Foto do dia em que [Nome do Gatinho] chegou">
+        <!-- SUBSTITUIR: fotos/chegada.jpg -->
+      </div>
+      <div class="story__text">
+        <span class="paw-mark" aria-hidden="true">
+          <svg viewBox="0 0 100 100"><path d="M50 58c14 0 26 13 26 24 0 8-7 13-16 13-4 0-7-2-10-2s-6 2-10 2c-9 0-16-5-16-13 0-11 12-24 26-24z"/><ellipse cx="24" cy="42" rx="11" ry="14"/><ellipse cx="50" cy="30" rx="11" ry="14"/><ellipse cx="76" cy="42" rx="11" ry="14"/><ellipse cx="14" cy="66" rx="9" ry="12"/></svg>
+        </span>
+        <h2>De onde veio</h2>
+        <p>
+          [Conta aqui a história de como se conheceram: foi adotado,
+          apareceu à porta, veio de uma ninhada de amigos... Onde e quando
+          foi, e o que sentiste naquele primeiro dia.]
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ GALERIA ============ -->
+    <section class="gallery reveal" id="momentos">
+      <div class="gallery__intro">
+        <h2>Os nossos momentos</h2>
+        <p>[Frase opcional a introduzir a galeria — por exemplo,
+          "Alguns dos instantes que ficam."]</p>
+      </div>
+
+      <div class="gallery__grid">
+        <figure class="ph ph--tall" style="background-image:url('fotos/momento-1.jpg')">
+          <span class="ph__label">fotos/momento-1.jpg</span>
+          <figcaption>[legenda opcional]</figcaption>
+        </figure>
+        <figure class="ph" style="background-image:url('fotos/momento-2.jpg')">
+          <span class="ph__label">fotos/momento-2.jpg</span>
+          <figcaption>[legenda opcional]</figcaption>
+        </figure>
+        <figure class="ph" style="background-image:url('fotos/momento-3.jpg')">
+          <span class="ph__label">fotos/momento-3.jpg</span>
+          <figcaption>[legenda opcional]</figcaption>
+        </figure>
+        <figure class="ph ph--wide" style="background-image:url('fotos/momento-4.jpg')">
+          <span class="ph__label">fotos/momento-4.jpg</span>
+          <figcaption>[legenda opcional]</figcaption>
+        </figure>
+        <figure class="ph" style="background-image:url('fotos/momento-5.jpg')">
+          <span class="ph__label">fotos/momento-5.jpg</span>
+          <figcaption>[legenda opcional]</figcaption>
+        </figure>
+        <figure class="ph ph--tall" style="background-image:url('fotos/momento-6.jpg')">
+          <span class="ph__label">fotos/momento-6.jpg</span>
+          <figcaption>[legenda opcional]</figcaption>
+        </figure>
+        <figure class="ph ph--wide" style="background-image:url('fotos/momento-7.jpg')">
+          <span class="ph__label">fotos/momento-7.jpg</span>
+          <figcaption>[legenda opcional]</figcaption>
+        </figure>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ DESPEDIDA ============ -->
+  <footer class="closing">
+    <span class="paw-mark" aria-hidden="true">
+      <svg viewBox="0 0 100 100"><path d="M50 58c14 0 26 13 26 24 0 8-7 13-16 13-4 0-7-2-10-2s-6 2-10 2c-9 0-16-5-16-13 0-11 12-24 26-24z"/><ellipse cx="24" cy="42" rx="11" ry="14"/><ellipse cx="50" cy="30" rx="11" ry="14"/><ellipse cx="76" cy="42" rx="11" ry="14"/><ellipse cx="14" cy="66" rx="9" ry="12"/></svg>
+    </span>
+    <p class="closing__text">[Uma última frase de despedida ou
+      agradecimento — o que gostarias que ficasse escrito.]</p>
+    <p class="closing__sub">com saudade, sempre</p>
+  </footer>
+
+  <script>
+    // Mancha de luz (sunbeam) que se desloca com o scroll
+    (function(){
+      var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var sun = document.querySelector('.sunbeam');
+      if (sun && !reduceMotion){
+        window.addEventListener('scroll', function(){
+          var h = document.documentElement.scrollHeight - window.innerHeight;
+          var progress = h > 0 ? window.scrollY / h : 0;
+          var x = 15 + progress * 55; // desloca-se da esquerda para a direita
+          var y = 5 + progress * 70;  // e desce ao longo da página
+          sun.style.setProperty('--sun-x', x + '%');
+          sun.style.setProperty('--sun-y', y + '%');
+        }, { passive: true });
+      }
+
+      // Revelar secções ao entrar na vista
+      var items = document.querySelectorAll('.reveal');
+      if ('IntersectionObserver' in window){
+        var io = new IntersectionObserver(function(entries){
+          entries.forEach(function(entry){
+            if (entry.isIntersecting){
+              entry.target.classList.add('is-visible');
+              io.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.15 });
+        items.forEach(function(el){ io.observe(el); });
+      } else {
+        items.forEach(function(el){ el.classList.add('is-visible'); });
+      }
+    })();
+  </script>
+
+</body>
+</html>
