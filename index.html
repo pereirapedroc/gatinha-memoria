@@ -92,7 +92,7 @@
        Caminho sugerido: fotos/capa.jpg (ver README) */
     background-image:
       linear-gradient(rgba(43,36,29,0.08), rgba(43,36,29,0.08)),
-      url("fotos/capa.jpg");
+      url("peluche-favorito.jpg");
     background-size: cover;
     background-position: center;
     background-color: var(--mist);
@@ -100,7 +100,7 @@
 
   .hero__media::before{
     /* aviso visual enquanto não existir foto real */
-    content: "SUBSTITUIR — fotos/capa.jpg";
+    content: "peluche-favorito.jpg";
     position: absolute;
     inset: 0;
     display: flex;
@@ -236,8 +236,8 @@
   }
   /* SUBSTITUIR: cada secção já aponta para o seu ficheiro em /fotos.
      Basta colocar lá a imagem com o mesmo nome. */
-  #como-era .story__media{ background-image: url("fotos/como-era.jpg"); }
-  #de-onde-veio .story__media{ background-image: url("fotos/chegada.jpg"); }
+  #como-era .story__media{ background-image: url("na-sala-a-olhar.jpg"); }
+  #de-onde-veio .story__media{ background-image: url("com-dois-gatinhos.jpg"); }
 
   .story__text h2{
     font-size: clamp(1.9rem, 3.4vw, 2.6rem);
@@ -397,11 +397,11 @@
 
   <!-- ============ HERO ============ -->
   <header class="hero">
-    <div class="hero__media" role="img" aria-label="Foto principal de [Nome do Gatinho]"></div>
+    <div class="hero__media" role="img" aria-label="Foto principal a Lapja"></div>
     <div class="hero__overlay"></div>
     <div class="hero__content">
-      <p class="eyebrow">Em memória de</p>
-      <h1>[Nome do Gatinho]</h1>
+      <p class="eyebrow">Em memória da</p>
+      <h1>Lapja</h1>
       <p class="dates">[dd/mm/aaaa] — [dd/mm/aaaa]</p>
     </div>
     <div class="scroll-cue">continuar</div>
@@ -411,7 +411,7 @@
 
     <!-- ============ COMO ERA ============ -->
     <section class="story reveal" id="como-era">
-      <div class="story__media" role="img" aria-label="Foto de [Nome do Gatinho]">
+      <div class="story__media" role="img" aria-label="Foto da Lapja">
         <!-- SUBSTITUIR: fotos/como-era.jpg -->
       </div>
       <div class="story__text">
@@ -432,7 +432,7 @@
 
     <!-- ============ DE ONDE VEIO ============ -->
     <section class="story story--reverse reveal" id="de-onde-veio">
-      <div class="story__media" role="img" aria-label="Foto do dia em que [Nome do Gatinho] chegou">
+      <div class="story__media" role="img" aria-label="Foto do dia em que a Lapja chegou">
         <!-- SUBSTITUIR: fotos/chegada.jpg -->
       </div>
       <div class="story__text">
@@ -458,19 +458,19 @@
 
       <div class="gallery__grid">
         <figure class="ph ph--tall" style="background-image:url('fotos/momento-1.jpg')">
-          <span class="ph__label">fotos/momento-1.jpg</span>
+          <span class="ph__label">a-dormir-sofa.jpg</span>
           <figcaption>[legenda opcional]</figcaption>
         </figure>
         <figure class="ph" style="background-image:url('fotos/momento-2.jpg')">
-          <span class="ph__label">fotos/momento-2.jpg</span>
+          <span class="ph__label">a-dormir-cadeira.jpg</span>
           <figcaption>[legenda opcional]</figcaption>
         </figure>
         <figure class="ph" style="background-image:url('fotos/momento-3.jpg')">
-          <span class="ph__label">fotos/momento-3.jpg</span>
+          <span class="ph__label">com-outro-gatinho.jpg</span>
           <figcaption>[legenda opcional]</figcaption>
         </figure>
         <figure class="ph ph--wide" style="background-image:url('fotos/momento-4.jpg')">
-          <span class="ph__label">fotos/momento-4.jpg</span>
+          <span class="ph__label">deitada-na-mesa-ao-pe-janela.jpg</span>
           <figcaption>[legenda opcional]</figcaption>
         </figure>
         <figure class="ph" style="background-image:url('fotos/momento-5.jpg')">
