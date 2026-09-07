@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Em memória da [Lapja]</title>
-<meta name="description" content="Uma página de memória para [Nome do Gatinho].">
+<title>Em memória da Lapja</title>
+<meta name="description" content="Uma página de memória para a Lapja.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -92,7 +92,7 @@
        Caminho sugerido: fotos/capa.jpg (ver README) */
     background-image:
       linear-gradient(rgba(43,36,29,0.08), rgba(43,36,29,0.08)),
-      url("peluche-favorito.jpg");
+      url("fotos/peluche-favorito.jpg");
     background-size: cover;
     background-position: center;
     background-color: var(--mist);
@@ -100,7 +100,7 @@
 
   .hero__media::before{
     /* aviso visual enquanto não existir foto real */
-    content: "peluche-favorito.jpg";
+    content: "fotos/peluche-favorito.jpg";
     position: absolute;
     inset: 0;
     display: flex;
@@ -236,8 +236,8 @@
   }
   /* SUBSTITUIR: cada secção já aponta para o seu ficheiro em /fotos.
      Basta colocar lá a imagem com o mesmo nome. */
-  #como-era .story__media{ background-image: url("na-sala-a-olhar.jpg"); }
-  #de-onde-veio .story__media{ background-image: url("com-dois-gatinhos.jpg"); }
+  #como-era .story__media{ background-image: url("fotos/na-sala-a-olhar.jpg"); }
+  #de-onde-veio .story__media{ background-image: url("fotos/com-dois-gatinhos.jpg"); }
 
   .story__text h2{
     font-size: clamp(1.9rem, 3.4vw, 2.6rem);
@@ -458,19 +458,19 @@
 
       <div class="gallery__grid">
         <figure class="ph ph--tall" style="background-image:url('fotos/momento-1.jpg')">
-          <span class="ph__label">a-dormir-sofa.jpg</span>
+          <span class="ph__label">fotos/a-dormir-sofa.jpg</span>
           <figcaption>[legenda opcional]</figcaption>
         </figure>
         <figure class="ph" style="background-image:url('fotos/momento-2.jpg')">
-          <span class="ph__label">a-dormir-cadeira.jpg</span>
+          <span class="ph__label">fotos/a-dormir-cadeira.jpg</span>
           <figcaption>[legenda opcional]</figcaption>
         </figure>
         <figure class="ph" style="background-image:url('fotos/momento-3.jpg')">
-          <span class="ph__label">com-outro-gatinho.jpg</span>
+          <span class="ph__label">fotos/com-outro-gatinho.jpg</span>
           <figcaption>[legenda opcional]</figcaption>
         </figure>
         <figure class="ph ph--wide" style="background-image:url('fotos/momento-4.jpg')">
-          <span class="ph__label">deitada-na-mesa-ao-pe-janela.jpg</span>
+          <span class="ph__label">fotos/deitada-na-mesa-ao-pe-janela.jpg</span>
           <figcaption>[legenda opcional]</figcaption>
         </figure>
         <figure class="ph" style="background-image:url('fotos/momento-5.jpg')">
