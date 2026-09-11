@@ -57,9 +57,6 @@
   a{ color: var(--clay); }
 
   /* ============ SUNBEAM SIGNATURE ELEMENT ============ */
-  /* Uma mancha de luz quente que se desloca lentamente à medida
-     que se percorre a página — como o sol a andar pelo chão,
-     o sítio preferido de qualquer gato. */
   .sunbeam{
     position: fixed;
     inset: 0;
@@ -88,8 +85,6 @@
     position: absolute;
     inset: 0;
     z-index: 0;
-    /* SUBSTITUIR: coloca aqui a foto principal do teu gatinho.
-       Caminho sugerido: fotos/capa.jpg (ver README) */
     background-image:
       linear-gradient(rgba(43,36,29,0.08), rgba(43,36,29,0.08)),
       url("fotos/peluche-favorito.jpg");
@@ -121,8 +116,13 @@
   }
 
   .hero__content h1{
-  color: var(--gold-soft);
-  }  
+    font-size: clamp(2.6rem, 8vw, 5.2rem);
+    font-style: italic;
+    font-weight: 500;
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+    color: var(--gold-soft);
+  }
 
   .eyebrow{
     font-family: var(--body);
@@ -131,14 +131,6 @@
     text-transform: uppercase;
     color: var(--gold);
     margin: 0 0 0.9rem;
-  }
-
-  .hero__content h1{
-    font-size: clamp(2.6rem, 8vw, 5.2rem);
-    font-style: italic;
-    font-weight: 500;
-    line-height: 1.02;
-    letter-spacing: -0.01em;
   }
 
   .dates{
@@ -173,7 +165,7 @@
     50%{ transform: scaleY(1); opacity: 1; transform-origin: top; }
   }
 
-  /* ============ PAW MARK (signature secundária, usada 1x por secção) ============ */
+  /* ============ PAW MARK ============ */
   .paw-mark{
     display: inline-flex;
     width: 22px;
@@ -183,6 +175,52 @@
     margin-bottom: 1.1rem;
   }
   .paw-mark svg{ width: 100%; height: 100%; fill: currentColor; }
+
+  /* Patinhas tocáveis — revelam uma memória escondida */
+  .paw-mark--tap{
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    transition: transform 0.2s ease;
+    animation: paw-pulse 2.4s ease-in-out infinite;
+  }
+  .paw-mark--tap:hover{ transform: scale(1.12); }
+  .paw-mark--tap:active{ transform: scale(0.94); }
+  .paw-mark--tap.tapped{ animation: none; }
+  @keyframes paw-pulse{
+    0%,100%{ opacity: 0.85; transform: scale(1); }
+    50%{ opacity: 1; transform: scale(1.08); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .paw-mark--tap{ animation: none; }
+  }
+
+  .paw-secret{
+    margin: 1rem 0 0;
+    padding: 0.9rem 1rem;
+    background: var(--paper-dim);
+    border-left: 2px solid var(--gold);
+    border-radius: 2px;
+    font-size: 0.95rem;
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+  .paw-secret[hidden]{ display: none; }
+  .paw-secret.is-shown{ animation: reveal-in 0.35s ease; }
+  @keyframes reveal-in{
+    from{ opacity: 0; transform: translateY(-6px); }
+    to{ opacity: 1; transform: translateY(0); }
+  }
+  .paw-hint{
+    display: block;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: 0.6;
+    margin: -0.6rem 0 1rem;
+  }
 
   /* ============ STORY SECTIONS ============ */
   main{ position: relative; z-index: 1; background: var(--paper); }
@@ -219,8 +257,6 @@
     background-size: cover;
     background-position: center;
   }
-  /* SUBSTITUIR: cada secção já aponta para o seu ficheiro em /fotos.
-     Basta colocar lá a imagem com o mesmo nome. */
   #como-era .story__media{ background-image: url("fotos/na-sala-a-olhar.jpg"); }
   #de-onde-veio .story__media{ background-image: url("fotos/com-dois-gatinhos.JPG"); }
 
@@ -251,6 +287,27 @@
     transition: opacity 0.7s ease, transform 0.7s ease;
   }
   .reveal.is-visible{ opacity: 1; transform: translateY(0); }
+
+  /* ============ VIDEO ============ */
+  .video-section{
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: clamp(1rem, 4vh, 2rem) var(--gap) clamp(4rem, 9vh, 6.5rem);
+    text-align: center;
+  }
+  .video-section__inner{ max-width: 640px; margin: 0 auto; }
+  .video-section h2{
+    font-size: clamp(1.9rem, 3.4vw, 2.6rem);
+    font-style: italic;
+    margin-bottom: 1.4rem;
+  }
+  .video-section__player{
+    width: 100%;
+    display: block;
+    border-radius: 4px;
+    background: var(--ink);
+    box-shadow: 0 14px 34px rgba(43,36,29,0.2);
+  }
 
   /* ============ GALLERY ============ */
   .gallery{
@@ -396,40 +453,60 @@
 
     <!-- ============ COMO ERA ============ -->
     <section class="story reveal" id="como-era">
-      <div class="story__media" role="img" aria-label="Foto da Lapja">
-        <!-- SUBSTITUIR: fotos/como-era.jpg -->
-      </div>
+      <div class="story__media" role="img" aria-label="Foto da Lapja"></div>
       <div class="story__text">
-        <span class="paw-mark" aria-hidden="true">
-          <svg viewBox="0 0 100 100"><path d="M50 58c14 0 26 13 26 24 0 8-7 13-16 13-4 0-7-2-10-2s-6 2-10 2c-9 0-16-5-16-13 0-11 12-24 26-24z"/><ellipse cx="24" cy="42" rx="11" ry="14"/><ellipse cx="50" cy="30" rx="11" ry="14"/><ellipse cx="76" cy="42" rx="11" ry="14"/><ellipse cx="14" cy="66" rx="9" ry="12"/></svg>
-        </span>
+        <button type="button" class="paw-mark paw-mark--tap" aria-expanded="false" aria-controls="segredo-como-era">
+          <svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 58c14 0 26 13 26 24 0 8-7 13-16 13-4 0-7-2-10-2s-6 2-10 2c-9 0-16-5-16-13 0-11 12-24 26-24z"/><ellipse cx="24" cy="42" rx="11" ry="14"/><ellipse cx="50" cy="30" rx="11" ry="14"/><ellipse cx="76" cy="42" rx="11" ry="14"/><ellipse cx="14" cy="66" rx="9" ry="12"/></svg>
+        </button>
+        <span class="paw-hint">toca na patinha</span>
         <h2>Como era</h2>
         <p>
           [Escreve aqui como era o teu gatinho: a personalidade, os hábitos,
           o que gostava de fazer, algum som ou gesto característico, o que
-          te fazia rir ou te acalmava. Duas ou três frases já bastam — o
-          importante é que soe a ele.]
+          te fazia rir ou te acalmava.]
         </p>
-        <blockquote>[Uma frase curta que o resuma — algo que dizias
-          sobre ele, ou que ele "diria" de si mesmo.]</blockquote>
+        <blockquote>[Uma frase curta que o resuma.]</blockquote>
+        <p class="paw-secret" id="segredo-como-era" hidden>
+          [Uma memória extra ou curiosidade escondida — algo pequeno e
+          especial que só tu sabes.]
+        </p>
       </div>
     </section>
 
     <!-- ============ DE ONDE VEIO ============ -->
     <section class="story story--reverse reveal" id="de-onde-veio">
-      <div class="story__media" role="img" aria-label="Foto do dia em que a Lapja chegou">
-        <!-- SUBSTITUIR: fotos/chegada.jpg -->
-      </div>
+      <div class="story__media" role="img" aria-label="Foto do dia em que a Lapja chegou"></div>
       <div class="story__text">
-        <span class="paw-mark" aria-hidden="true">
-          <svg viewBox="0 0 100 100"><path d="M50 58c14 0 26 13 26 24 0 8-7 13-16 13-4 0-7-2-10-2s-6 2-10 2c-9 0-16-5-16-13 0-11 12-24 26-24z"/><ellipse cx="24" cy="42" rx="11" ry="14"/><ellipse cx="50" cy="30" rx="11" ry="14"/><ellipse cx="76" cy="42" rx="11" ry="14"/><ellipse cx="14" cy="66" rx="9" ry="12"/></svg>
-        </span>
+        <button type="button" class="paw-mark paw-mark--tap" aria-expanded="false" aria-controls="segredo-de-onde-veio">
+          <svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 58c14 0 26 13 26 24 0 8-7 13-16 13-4 0-7-2-10-2s-6 2-10 2c-9 0-16-5-16-13 0-11 12-24 26-24z"/><ellipse cx="24" cy="42" rx="11" ry="14"/><ellipse cx="50" cy="30" rx="11" ry="14"/><ellipse cx="76" cy="42" rx="11" ry="14"/><ellipse cx="14" cy="66" rx="9" ry="12"/></svg>
+        </button>
+        <span class="paw-hint">toca na patinha</span>
         <h2>De onde veio</h2>
         <p>
           [Conta aqui a história de como se conheceram: foi adotado,
           apareceu à porta, veio de uma ninhada de amigos... Onde e quando
           foi, e o que sentiste naquele primeiro dia.]
         </p>
+        <p class="paw-secret" id="segredo-de-onde-veio" hidden>
+          [Outra memória escondida — talvez o primeiro dia, ou algo
+          engraçado que aconteceu logo no início.]
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ VÍDEO ============ -->
+    <section class="video-section reveal" id="video">
+      <div class="video-section__inner">
+        <h2>Um momento em vídeo</h2>
+        <video
+          class="video-section__player"
+          controls
+          playsinline
+          preload="metadata"
+          poster="fotos/peluche-favorito.jpg">
+          <source src="fotos/video.mp4" type="video/mp4">
+          O teu navegador não suporta vídeo HTML5.
+        </video>
       </div>
     </section>
 
@@ -437,19 +514,14 @@
     <section class="gallery reveal" id="momentos">
       <div class="gallery__intro">
         <h2>Os nossos momentos</h2>
-        <p>[Frase opcional a introduzir a galeria — por exemplo,
-          "Alguns dos instantes que ficam."]</p>
+        <p>[Frase opcional a introduzir a galeria.]</p>
       </div>
 
       <div class="gallery__grid">
-        <figure class="ph ph--tall" style="background-image:url('fotos/a-dormir-sofa.jpg')">
-        </figure>
-        <figure class="ph" style="background-image:url('fotos/a-dormir-cadeira.jpg')">
-        </figure>
-        <figure class="ph" style="background-image:url('fotos/com-outro-gatinho.JPG')">
-        </figure>
-        <figure class="ph ph--wide" style="background-image:url('fotos/deitada-na-mesa-ao-pe-janela.JPG')">
-        </figure>
+        <figure class="ph ph--tall" style="background-image:url('fotos/a-dormir-sofa.jpg')"></figure>
+        <figure class="ph" style="background-image:url('fotos/a-dormir-cadeira.jpg')"></figure>
+        <figure class="ph" style="background-image:url('fotos/com-outro-gatinho.JPG')"></figure>
+        <figure class="ph ph--wide" style="background-image:url('fotos/deitada-na-mesa-ao-pe-janela.JPG')"></figure>
         <figure class="ph" style="background-image:url('fotos/momento-5.jpg')">
           <span class="ph__label">fotos/momento-5.jpg</span>
           <figcaption>[legenda opcional]</figcaption>
@@ -478,16 +550,17 @@
   </footer>
 
   <script>
-    // Mancha de luz (sunbeam) que se desloca com o scroll
     (function(){
       var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // Mancha de luz (sunbeam) que se desloca com o scroll
       var sun = document.querySelector('.sunbeam');
       if (sun && !reduceMotion){
         window.addEventListener('scroll', function(){
           var h = document.documentElement.scrollHeight - window.innerHeight;
           var progress = h > 0 ? window.scrollY / h : 0;
-          var x = 15 + progress * 55; // desloca-se da esquerda para a direita
-          var y = 5 + progress * 70;  // e desce ao longo da página
+          var x = 15 + progress * 55;
+          var y = 5 + progress * 70;
           sun.style.setProperty('--sun-x', x + '%');
           sun.style.setProperty('--sun-y', y + '%');
         }, { passive: true });
@@ -508,6 +581,20 @@
       } else {
         items.forEach(function(el){ el.classList.add('is-visible'); });
       }
+
+      // Patinhas tocáveis — revelam uma memória escondida
+      document.querySelectorAll('.paw-mark--tap').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          var id = btn.getAttribute('aria-controls');
+          var secret = document.getElementById(id);
+          if (!secret) return;
+          var isOpen = !secret.hidden;
+          secret.hidden = isOpen;
+          secret.classList.toggle('is-shown', !isOpen);
+          btn.setAttribute('aria-expanded', String(!isOpen));
+          btn.classList.add('tapped');
+        });
+      });
     })();
   </script>
 
