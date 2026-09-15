@@ -551,7 +551,7 @@ Foi mãe uma única vez, mas rapidamente percebeu que o famoso “instinto mater
           playsinline
           preload="metadata"
           poster="fotos/peluche-favorito.jpg">
-          <source src="fotos/video-festinhas.MOV" type="video/mp4">
+          <source src="fotos/video-festinhas.MOV" type="video/quicktime">
           O teu navegador não suporta vídeo HTML5.
         </video>
       </div>
@@ -634,6 +634,7 @@ Foi mãe uma única vez, mas rapidamente percebeu que o famoso “instinto mater
 
       function openModal(src){
         modalVideo.src = src;
+        modalVideo.load();
         modal.hidden = false;
         modal.setAttribute('aria-hidden', 'false');
         modalVideo.play().catch(function(){ /* ignora se o navegador bloquear autoplay */ });
