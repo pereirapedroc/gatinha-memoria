@@ -176,7 +176,7 @@
   }
   .paw-mark svg{ width: 100%; height: 100%; fill: currentColor; }
 
-  /* Patinhas tocáveis — revelam uma memória escondida */
+  /* Patinhas tocáveis — abrem um pop-up com vídeo */
   .paw-mark--tap{
     cursor: pointer;
     background: none;
@@ -196,22 +196,6 @@
     .paw-mark--tap{ animation: none; }
   }
 
-  .paw-secret{
-    margin: 1rem 0 0;
-    padding: 0.9rem 1rem;
-    background: var(--paper-dim);
-    border-left: 2px solid var(--gold);
-    border-radius: 2px;
-    font-size: 0.95rem;
-    font-style: italic;
-    color: var(--ink-soft);
-  }
-  .paw-secret[hidden]{ display: none; }
-  .paw-secret.is-shown{ animation: reveal-in 0.35s ease; }
-  @keyframes reveal-in{
-    from{ opacity: 0; transform: translateY(-6px); }
-    to{ opacity: 1; transform: translateY(0); }
-  }
   .paw-hint{
     display: block;
     font-size: 0.68rem;
@@ -220,6 +204,69 @@
     color: var(--ink-soft);
     opacity: 0.6;
     margin: -0.6rem 0 1rem;
+  }
+
+  /* ============ POP-UP DE VÍDEO ============ */
+  .paw-modal{
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.2rem;
+  }
+  .paw-modal[hidden]{ display: none; }
+
+  .paw-modal__backdrop{
+    position: absolute;
+    inset: 0;
+    background: rgba(43,36,29,0.85);
+  }
+
+  .paw-modal__panel{
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 420px;
+    background: var(--ink);
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.45);
+    animation: modal-in 0.25s ease;
+  }
+  @keyframes modal-in{
+    from{ opacity: 0; transform: scale(0.94); }
+    to{ opacity: 1; transform: scale(1); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .paw-modal__panel{ animation: none; }
+  }
+
+  .paw-modal__video{
+    width: 100%;
+    display: block;
+    background: #000;
+    max-height: 80vh;
+  }
+
+  .paw-modal__close{
+    position: absolute;
+    top: 0.6rem;
+    right: 0.6rem;
+    z-index: 2;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.55);
+    color: #fff;
+    border: none;
+    font-size: 1rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   /* ============ STORY SECTIONS ============ */
@@ -288,7 +335,7 @@
   }
   .reveal.is-visible{ opacity: 1; transform: translateY(0); }
 
-  /* ============ VIDEO ============ */
+  /* ============ VIDEO (secção fixa) ============ */
   .video-section{
     max-width: var(--max);
     margin: 0 auto;
@@ -455,38 +502,21 @@
     <section class="story reveal" id="como-era">
       <div class="story__media" role="img" aria-label="Foto da Lapja"></div>
       <div class="story__text">
-        <button type="button" class="paw-mark paw-mark--tap" aria-expanded="false" aria-controls="segredo-como-era">
+        <button type="button" class="paw-mark paw-mark--tap"
+                data-video="fotos/video-divertido-1.mp4"
+                aria-label="Tocar para ver um vídeo divertido">
           <svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 58c14 0 26 13 26 24 0 8-7 13-16 13-4 0-7-2-10-2s-6 2-10 2c-9 0-16-5-16-13 0-11 12-24 26-24z"/><ellipse cx="24" cy="42" rx="11" ry="14"/><ellipse cx="50" cy="30" rx="11" ry="14"/><ellipse cx="76" cy="42" rx="11" ry="14"/><ellipse cx="14" cy="66" rx="9" ry="12"/></svg>
         </button>
         <span class="paw-hint">toca na patinha</span>
         <h2>Como era</h2>
         <p>
-          A Lapja tinha uma cláusula muito clara no contrato: mimos só quando ELA
-quisesse, nunca por iniciativa alheia. Passou a maior parte da vida a
-tratar toda a gente com a educada distância de quem tolera os humanos
-por necessidade prática (comida, principalmente) — toda a gente, menos
-eu. Contudo, com a sua dona favorita era outra história: sempre que a Lucia se encontrava sozinha, lá vinha
-ela para fazer companhia, como se tivesse um radar próprio para isso. Não queria
-só estar por perto — queria estar mesmo estar presente, sempre. Só nos últimos
-dois anos é que resolveu, sem aviso prévio, abrir essa exceção a mais
-gente: passou a pedir festas como quem pede satisfações. Fazias-lhe
-festas, paravas a mão dois segundos, e ela reclamava, baixinho, mas
-reclamava, tipo cliente insatisfeito a pedir o livro de reclamações. E
-depois havia as unhas. Não eram unhas, eram facas de cozinha. Quando
-ronronava e fazia "biscoitos", cravava-as na roupa toda sem qualquer
-noção de dano colateral. Já mais velhota, começou a perder o jeito de
-as recolher a tempo, e ficava presa à roupa das pessoas por pura falta
-de reflexos, o que, claro, era sempre culpa de outra pessoa, nunca
-dela. Nos últimos meses de vida, trocou os resmungos por um espirro
-miudinho que se tornou a sua assinatura sonora: muito fofinho de
-ouvir, mas que também partia um bocadinho o coração, porque via-se que
-a incomodava.
+          A Lapja não veio de lado nenhum — nasceu em casa, como quem diz que já estava destinada a fazer parte da família. A mãe dela também tinha nascido ali e, naquela altura, já ia na terceira geração de uma pequena linhagem de gatas com uma tradição muito simples: ficava sempre um dos bebés. E, desta vez, foi a Lapja que ficou.
+
+Acabou por ficar durante 17, 18 anos, tempo mais do que suficiente para crescer, ganhar o seu feitio rabugento, conquistar os seus cantinhos favoritos e até sobreviver a uma mudança de casa sem perder a sua dignidade.
+
+Foi mãe uma única vez, mas rapidamente percebeu que o famoso “instinto maternal” talvez não fosse bem a sua vocação. Fez o que pôde, à sua maneira, e depois voltou tranquilamente àquilo que sabia fazer melhor: ser a Lapja.
         </p>
-        <blockquote>Mimos só por convite — e o convite, esse, era quase sempre só para a Lucia.</blockquote>
-        <p class="paw-secret" id="segredo-como-era" hidden>
-          [Uma memória extra ou curiosidade escondida — algo pequeno e
-          especial que só tu sabes.]
-        </p>
+        <blockquote>Mimos só por convite... e o convite, esse, era quase sempre só para a Lucia.</blockquote>
       </div>
     </section>
 
@@ -494,26 +524,24 @@ a incomodava.
     <section class="story story--reverse reveal" id="de-onde-veio">
       <div class="story__media" role="img" aria-label="Foto do dia em que a Lapja chegou"></div>
       <div class="story__text">
-        <button type="button" class="paw-mark paw-mark--tap" aria-expanded="false" aria-controls="segredo-de-onde-veio">
+        <button type="button" class="paw-mark paw-mark--tap"
+                data-video="fotos/video-divertido-2.mp4"
+                aria-label="Tocar para ver um vídeo divertido">
           <svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 58c14 0 26 13 26 24 0 8-7 13-16 13-4 0-7-2-10-2s-6 2-10 2c-9 0-16-5-16-13 0-11 12-24 26-24z"/><ellipse cx="24" cy="42" rx="11" ry="14"/><ellipse cx="50" cy="30" rx="11" ry="14"/><ellipse cx="76" cy="42" rx="11" ry="14"/><ellipse cx="14" cy="66" rx="9" ry="12"/></svg>
         </button>
         <span class="paw-hint">toca na patinha</span>
         <h2>De onde veio</h2>
         <p>
-          A Lapja não veio de lado nenhum, nasceu em casa, como quem diz que já estava destinada a fazer parte da família. A mãe dela também tinha nascido ali e, naquela altura, já ia na terceira geração de uma pequena linhagem de gatas com uma tradição muito simples: ficava sempre um dos bebés. E, desta vez, foi a Lapja que ficou.
+           A Lapja não veio de lado nenhum, nasceu em casa, como quem diz que já estava destinada a fazer parte da família. A mãe dela também tinha nascido ali e, naquela altura, já ia na terceira geração de uma pequena linhagem de gatas com uma tradição muito simples: ficava sempre um dos bebés. E, desta vez, foi a Lapja que ficou.
 
-          Acabou por ficar durante 17, 18 anos, tempo mais do que suficiente para crescer, ganhar o seu feitio rabugento, conquistar os seus cantinhos favoritos e até sobreviver a uma mudança de casa sem perder a sua dignidade.
+           Acabou por ficar durante 17, 18 anos, tempo mais do que suficiente para crescer, ganhar o seu feitio rabugento, conquistar os seus cantinhos favoritos e até sobreviver a uma mudança de casa sem perder a sua dignidade.
 
-          Foi mãe uma única vez, mas rapidamente percebeu que o famoso “instinto maternal” talvez não fosse bem a sua vocação. Fez o que pôde, à sua maneira, e depois voltou tranquilamente àquilo que sabia fazer melhor: ser a Lapja!
-        </p>
-        <p class="paw-secret" id="segredo-de-onde-veio" hidden>
-          [Outra memória escondida — talvez o primeiro dia, ou algo
-          engraçado que aconteceu logo no início.]
+           Foi mãe uma única vez, mas rapidamente percebeu que o famoso “instinto maternal” talvez não fosse bem a sua vocação. Fez o que pôde, à sua maneira, e depois voltou tranquilamente àquilo que sabia fazer melhor: ser a Lapja!
         </p>
       </div>
     </section>
 
-    <!-- ============ VÍDEO ============ -->
+    <!-- ============ VÍDEO PRINCIPAL ============ -->
     <section class="video-section reveal" id="video">
       <div class="video-section__inner">
         <h2>Um momento em vídeo</h2>
@@ -523,7 +551,7 @@ a incomodava.
           playsinline
           preload="metadata"
           poster="fotos/peluche-favorito.jpg">
-          <source src="fotos/video-a-brincar-elastico.mov" type="video/mp4">
+          <source src="fotos/video.mp4" type="video/mp4">
           O teu navegador não suporta vídeo HTML5.
         </video>
       </div>
@@ -568,6 +596,15 @@ a incomodava.
     <p class="closing__sub">com saudade, sempre</p>
   </footer>
 
+  <!-- ============ POP-UP DE VÍDEO (ao tocar na patinha) ============ -->
+  <div class="paw-modal" id="pawModal" hidden aria-hidden="true">
+    <div class="paw-modal__backdrop" data-close></div>
+    <div class="paw-modal__panel" role="dialog" aria-modal="true" aria-label="Vídeo divertido">
+      <button type="button" class="paw-modal__close" data-close aria-label="Fechar">✕</button>
+      <video class="paw-modal__video" id="pawModalVideo" controls playsinline></video>
+    </div>
+  </div>
+
   <script>
     (function(){
       var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -601,18 +638,40 @@ a incomodava.
         items.forEach(function(el){ el.classList.add('is-visible'); });
       }
 
-      // Patinhas tocáveis — revelam uma memória escondida
+      // Pop-up de vídeo ao tocar na patinha
+      var modal = document.getElementById('pawModal');
+      var modalVideo = document.getElementById('pawModalVideo');
+
+      function openModal(src){
+        modalVideo.src = src;
+        modal.hidden = false;
+        modal.setAttribute('aria-hidden', 'false');
+        modalVideo.play().catch(function(){ /* ignora se o navegador bloquear autoplay */ });
+      }
+
+      function closeModal(){
+        modal.hidden = true;
+        modal.setAttribute('aria-hidden', 'true');
+        modalVideo.pause();
+        modalVideo.removeAttribute('src');
+        modalVideo.load();
+      }
+
       document.querySelectorAll('.paw-mark--tap').forEach(function(btn){
         btn.addEventListener('click', function(){
-          var id = btn.getAttribute('aria-controls');
-          var secret = document.getElementById(id);
-          if (!secret) return;
-          var isOpen = !secret.hidden;
-          secret.hidden = isOpen;
-          secret.classList.toggle('is-shown', !isOpen);
-          btn.setAttribute('aria-expanded', String(!isOpen));
+          var src = btn.getAttribute('data-video');
+          if (!src) return;
           btn.classList.add('tapped');
+          openModal(src);
         });
+      });
+
+      modal.querySelectorAll('[data-close]').forEach(function(el){
+        el.addEventListener('click', closeModal);
+      });
+
+      document.addEventListener('keydown', function(e){
+        if (e.key === 'Escape' && !modal.hidden) closeModal();
       });
     })();
   </script>
